@@ -1,5 +1,5 @@
 import axios from 'axios';
-import _ from 'lodash';
+import sample from 'lodash/collection/sample';
 
 export const FETCH_SONG = 'FETCH_SONG';
 
@@ -18,14 +18,14 @@ export function fetchSong(token, artist, market, related = false) {
     // console.log(artistObj);
     return axios.get(`${ROOT_URL}/artists/${artistObj.id}/albums?album_type=album%2Csingle%2Ccompilation&limit=50&market=${market}`, header)
     .then(function(response) {
-      const albumObj = _.sample(response.data.items);
+      const albumObj = sample(response.data.items);
       // console.log(albumObj);
       return axios.get(`${ROOT_URL}/albums/${albumObj.id}/tracks?offset=0&limit=50&market=${market}`, header)
       .then(function(response) {
         return {
           artist: artistObj,
           album: albumObj,
-          song: _.sample(response.data.items)
+          song: sample(response.data.items)
         }
       })
     })
