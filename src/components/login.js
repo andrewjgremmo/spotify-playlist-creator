@@ -12,7 +12,6 @@ export default class Login extends Component {
     if (this.props.token != undefined && this.props.user == undefined) {
       this.props.actions.fetchUser(this.props.token);
     }
-
   }
 
   render() {
