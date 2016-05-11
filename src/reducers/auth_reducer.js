@@ -12,7 +12,6 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
     case FETCH_USER:
-      console.log({ ...state, user: action.payload.data.id });
       return { ...state, user: action.payload.data.id }
     default:
       return state;
