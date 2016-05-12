@@ -1,5 +1,5 @@
 import axios from 'axios';
-import sample from 'lodash/collection/sample';
+import sample from 'lodash/sample';
 
 export const FETCH_SONG = 'FETCH_SONG';
 export const REMOVE_SONG = 'REMOVE_SONG';

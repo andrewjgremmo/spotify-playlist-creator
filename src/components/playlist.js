@@ -24,9 +24,9 @@ export default class Playlist extends Component {
   render() {
     console.log(this.props.songs);
     return(
-      <div>
-        <button>Save Playlist</button>
-        <button onClick={this.props.actions.removeAllSongs}>Clear All Songs</button>
+      <div className="playlist">
+        <button className="basic-button">Save Playlist</button>
+        <button className="basic-button" onClick={this.props.actions.removeAllSongs}>Clear All Songs</button>
         <table>
           <thead>
             <tr>

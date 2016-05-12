@@ -1,0 +1,85 @@
+/* --- RESET --- */
+
+html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, h3, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+  font-family: 'Montserrat';
+}
+
+ul {
+  list-style: none;
+}
+
+/* --- BODY --- */
+
+body {
+    background-color: #2d2d2d;
+    font-family: 'Montserrat';
+    color: lightgrey;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.container {
+    background-color: black;
+    display: block;
+    padding: 10px;
+    width: 50%;
+    margin: 15px auto;
+    height: 500px;
+}
+
+button.basic-button {
+    background-color: #2EBD59;
+    cursor: pointer;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 50px;
+}
+
+button.basic-button:hover {
+    background-color: #61DC86;
+}
+
+.login {
+    display: block;
+    margin: auto;
+    text-align: center;
+    width: 200px;
+}
+
+.playlist-options {
+    border: 1px solid #2d2d2d;
+    padding: 10px;
+}
+
+.playlist-options > button {
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+textarea {
+    background-color: white;
+    height: 120px;
+    color: black;
+    resize: none;
+    display: block;
+    padding: 5px;
+    width: 45%;
+    font-family: 'Open Sans';
+}
+
+

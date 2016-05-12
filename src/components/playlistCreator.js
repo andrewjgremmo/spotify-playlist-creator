@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as SongActions from '../actions/songs';
-import sample from 'lodash/collection/sample';
+import sample from 'lodash/sample';
 
 export default class PlaylistCreator extends Component {
   state = {
@@ -28,14 +28,14 @@ export default class PlaylistCreator extends Component {
 
   render () {
     return(
-      <div>
+      <div className="playlist-options">
         <textarea name="artistInput" onChange={this.onChange} value={this.state.artistInput}>
         </textarea>
         <label htmlFor="randomness">Randomness: {this.state.randomness}</label>
         <input name="randomness" id="randomness" type="range" min={1} max={20} step={1} value={this.state.randomness} onChange={this.onChange} />
         <label htmlFor="playlistLength">Playlist Length: {this.state.playlistLength}</label>
         <input name="playlistLength" id="playlistLength" type="range" min={5} max={50} step={5} value={this.state.playlistLength} onChange={this.onChange} />
-        <button onClick={this.generatePlaylist}>Generate Playlist</button>
+        <button className="basic-button" onClick={this.generatePlaylist}>Generate Playlist</button>
       </div>
     );
   }
