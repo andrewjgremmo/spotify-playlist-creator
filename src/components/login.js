@@ -18,7 +18,8 @@ export default class Login extends Component {
     const href = 'https://accounts.spotify.com/authorize' +
       '?client_id=36739bc49f164934b869ca2aa419a77e' +
       '&response_type=token' +
-      '&redirect_uri=http://andrewgremmo.com/spotify-playlist-creator/';
+      '&redirect_uri=http://andrewgremmo.com/spotify-playlist-creator/' +
+      `&scope=${encodeURIComponent("playlist-modify-public user-top-read")}`;
 
     return(
       <div class="login">

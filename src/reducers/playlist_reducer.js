@@ -2,7 +2,7 @@ import {
   FETCH_SONG,
   REMOVE_SONG,
   REMOVE_ALL_SONGS
-} from '../actions/songs';
+} from '../actions/playlist';
 import shuffle from 'lodash/collection/shuffle';
 
 const INITIAL_STATE = {

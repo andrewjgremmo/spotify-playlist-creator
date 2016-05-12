@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as SongActions from '../actions/songs';
+import * as PlaylistActions from '../actions/playlist';
 
 export default class Playlist extends Component {
   renderSongs() {
@@ -22,10 +22,9 @@ export default class Playlist extends Component {
   }
 
   render() {
-    console.log(this.props.songs);
     return(
       <div>
-        <button>Save Playlist</button>
+        <button onClick={() => {this.props.actions.savePlaylist(this.props.auth, this.props.songs)}}>Save Playlist</button>
         <button onClick={this.props.actions.removeAllSongs}>Clear All Songs</button>
         <table>
           <thead>
@@ -44,14 +43,14 @@ export default class Playlist extends Component {
 
 function mapStateToProps(state) {
   return {
-      token: state.auth.token,
-      songs: state.songs.songs
+      auth: state.auth,
+      songs: state.playlist.songs
   };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-      actions: bindActionCreators(SongActions, dispatch)
+      actions: bindActionCreators(PlaylistActions, dispatch)
     }
 }
 

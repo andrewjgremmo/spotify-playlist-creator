@@ -59,3 +59,24 @@ export function removeAllSongs() {
     type: REMOVE_ALL_SONGS
   }
 }
+
+export function savePlaylist(auth, songs) {
+  const authToken = {
+    'Authorization': `Bearer ${auth.token}`
+  }
+
+  const request = axios.post(`${ROOT_URL}/users/${auth.user}/playlists`, {
+      name: "Test Playlist"
+    }, {
+      headers: authToken
+    }
+  ).then(function(response) {
+    console.log(response);
+    // axios.post(`${ROOT_URL}/users/${auth.user.id}/`)
+  })
+
+  return {
+    type: SAVE_PLAYLIST,
+    payload: request
+  }
+}

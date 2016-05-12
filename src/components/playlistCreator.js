@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as SongActions from '../actions/songs';
+import * as PlaylistActions from '../actions/playlist';
 import sample from 'lodash/collection/sample';
 
 export default class PlaylistCreator extends Component {
@@ -44,13 +44,13 @@ export default class PlaylistCreator extends Component {
 function mapStateToProps(state) {
   return {
       token: state.auth.token,
-      songs: state.songs.songs
+      songs: state.playlist.songs
   };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-      actions: bindActionCreators(SongActions, dispatch)
+      actions: bindActionCreators(PlaylistActions, dispatch)
     }
 }
 
