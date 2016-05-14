@@ -1,0 +1,146 @@
+/* --- RESET --- */
+
+html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, h3, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+  font-family: 'Montserrat';
+}
+
+ul {
+  list-style: none;
+}
+
+/* --- BODY --- */
+
+body {
+    background-color: #2d2d2d;
+    font-family: 'Montserrat';
+    color: lightgrey;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.container {
+    background-color: black;
+    display: block;
+    padding: 10px;
+    width: 600px;
+    margin: 15px auto;
+    min-height: 500;
+    box-shadow: -2px 5px 5px 1px #242424;
+    -webkit-box-shadow: -2px 5px 5px 1px #242424;
+    -moz-box-shadow: -2px 5px 5px 1px #242424;
+    -o-box-shadow: -2px 5px 5px 1px #242424;
+}
+
+button.basic-button {
+    background-color: #2EBD59;
+    cursor: pointer;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 50px;
+    white-space: nowrap;
+}
+
+button.basic-button:hover {
+  background-color: #61DC86;
+}
+
+.login {
+    display: block;
+    margin: 5px auto;
+    text-align: center;
+    width: 100%;
+}
+
+.playlist-options {
+    border: 1px solid #2d2d2d;
+    padding: 10px;
+}
+
+.playlist-options > button {
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+textarea {
+    background-color: white;
+    height: 120px;
+    color: black;
+    resize: none;
+    display: block;
+    padding: 5px;
+    width: 45%;
+    font-family: 'Open Sans';
+}
+
+table {
+  display: block;
+  width: 600px;
+  text-align: left;
+}
+
+th.track, div.track {
+  width: 50px;
+}
+
+th.artist, div.artist {
+  width: 210px;
+}
+
+th.song, div.song {
+  width: 300px;
+}
+
+th.remove, div.remove {
+  width: 40px;
+}
+
+tr:hover button.remove-button {
+  display: inline;
+}
+
+button.remove-button {
+  border: 1px solid lightgrey;
+  border-radius: 50%;
+  padding: 0 3px;
+  cursor: pointer;
+  line-height: 99%;
+  display: none;
+}
+
+button.remove-button:hover {
+  border: 1px solid white;
+}
+
+button.remove-button:active {
+  background-color: lightgrey;
+  color: black;
+}
+
+td > div {
+  white-space: nowrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

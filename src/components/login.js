@@ -14,16 +14,26 @@ export default class Login extends Component {
     }
   }
 
-  render() {
-    const href = 'https://accounts.spotify.com/authorize' +
+  handleClick = () => {
+    window.location.href = 'https://accounts.spotify.com/authorize' +
       '?client_id=36739bc49f164934b869ca2aa419a77e' +
       '&response_type=token' +
       '&redirect_uri=http://andrewgremmo.com/spotify-playlist-creator/' +
       `&scope=${encodeURIComponent("playlist-modify-public user-top-read")}`;
+  }
+
+  render() {
+    const buttonProps = {
+      onClick: this.handleClick,
+      className: "basic-button",
+      disabled: this.props.user != undefined
+    }
+
+    const buttonText = this.props.user ? `Logged in as ${this.props.user}` : "Login to Spotify";
 
     return(
-      <div class="login">
-        { this.props.user ? <span> Logged in as { this.props.user } </span> : <a href={ href }>Login to Spotify</a> }
+      <div className="login">
+        <button { ...buttonProps }>{buttonText}</button>
       </div>
     );
   }

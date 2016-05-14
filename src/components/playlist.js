@@ -10,11 +10,13 @@ export default class Playlist extends Component {
       trackNum++;
       return (
         <tr key={song.song.id}>
-          <td>{trackNum}.</td>
-          <td>{song.artist.name}</td>
-          <td>{song.song.name}</td>
+          <td><div className="track">{trackNum}.</div></td>
+          <td><div className="artist">{song.artist.name}</div></td>
+          <td><div className="song">{song.song.name}</div></td>
           <td>
-            <button onClick={() => this.props.actions.removeSong(song)}>Remove</button>
+            <div className="remove">
+              <button className="remove-button" onClick={() => this.props.actions.removeSong(song)}>x</button>
+            </div>
           </td>
         </tr>
       )
@@ -23,13 +25,16 @@ export default class Playlist extends Component {
 
   render() {
     return(
-      <div>
-        <button onClick={() => {this.props.actions.savePlaylist(this.props.auth, this.props.songs)}}>Save Playlist</button>
-        <button onClick={this.props.actions.removeAllSongs}>Clear All Songs</button>
+      <div className="playlist">
+        <button className="basic-button" onClick={() => {this.props.actions.savePlaylist(this.props.auth, this.props.songs)}}>Save Playlist</button>
+        <button className="basic-button" onClick={this.props.actions.removeAllSongs}>Clear All Songs</button>
         <table>
           <thead>
             <tr>
-              <th>Track</th><th>Artist</th><th>Song</th><th>Remove</th>
+              <th className="track">Track</th>
+              <th className="artist">Artist</th>
+              <th className="song">Song</th>
+              <th className="remove"></th>
             </tr>
           </thead>
           <tbody>
