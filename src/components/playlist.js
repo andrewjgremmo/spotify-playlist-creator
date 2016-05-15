@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Song from '../components/song';
 import * as PlaylistActions from '../actions/playlist';
 
 export default class Playlist extends Component {
@@ -14,16 +15,12 @@ export default class Playlist extends Component {
     return this.props.songs.map((song) => {
       trackNum++;
       return (
-        <tr key={song.song.id}>
-          <td><div className="track">{trackNum}.</div></td>
-          <td><div className="artist">{song.artist.name}</div></td>
-          <td><div className="song">{song.song.name}</div></td>
-          <td>
-            <div className="remove">
-              <button className="remove-button" onClick={() => this.props.actions.removeSong(song)}>x</button>
-            </div>
-          </td>
-        </tr>
+        <Song
+          key={song.song.id}
+          trackNum={trackNum}
+          song={song}
+          remove={this.props.actions.removeSong}
+        />
       )
     })
   }
@@ -57,6 +54,7 @@ export default class Playlist extends Component {
   render() {
     return(
       <div className="playlist">
+        <h4>5. Change your playlist title if you wish and then save to your account!</h4>
         <input type="text" onChange={this.handleTitleChange} value={this.getTitle()} />
         <div className="playlist-buttons">
           <button className="basic-button" disabled={ this.props.saved } onClick={() => {this.props.actions.savePlaylist(this.props.auth, this.getTitle(), this.props.songs)}}> { this.props.saved ? "Saved" : "Save Playlist" }</button>

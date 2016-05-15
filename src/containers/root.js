@@ -10,7 +10,7 @@ export default class App extends Component {
       <div className="container">
         <h2>Spotify Playlist Creator</h2>
         <Login />
-        <PlaylistCreator />
+        <PlaylistCreator/>
         <Playlist />
       </div>
     );

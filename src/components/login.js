@@ -33,6 +33,7 @@ export default class Login extends Component {
 
     return(
       <div className="login">
+        {this.props.user ? null : <h4>1. Login to Spotify</h4> }
         <button { ...buttonProps }>{buttonText}</button>
       </div>
     );
