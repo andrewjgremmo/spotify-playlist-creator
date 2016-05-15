@@ -6,6 +6,7 @@ import {
 } from '../actions/playlist';
 import shuffle from 'lodash/shuffle';
 import take from 'lodash/take';
+import unionBy from 'lodash/unionBy';
 
 const INITIAL_STATE = {
   songs: [],
@@ -20,7 +21,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SONG:
       artist = action.payload.artist.name;
       return { ...state,
-        songs: shuffle(state.songs.concat([action.payload])),
+        songs: shuffle(unionBy(state.songs, [action.payload], 'song.id')),
         artists: {
           ...state.artists,
           [artist]: state.artists[artist] ? state.artists[artist] + 1 : 1

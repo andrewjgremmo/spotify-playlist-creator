@@ -2,7 +2,7 @@
 
 html, body, header, nav, h1, a,
 ul, li, strong, main, button, i,
-section, img, div, h2, h3, p, form,
+section, img, div, h2, h3, h4, p, form,
 fieldset, label, input, textarea,
 span, article, footer, time, small {
   margin: 0;
@@ -37,6 +37,11 @@ h2 {
   font-size: 24px;
   margin: 10px 0;
   text-align: center;
+}
+
+h4 {
+  color: #2EBD59;
+  font-size: 14px;
 }
 
 .container {
@@ -77,22 +82,42 @@ button:disabled {
   width: 100%;
 }
 
-.playlist-options {
+.playlist-creator {
   border: 1px solid #2d2d2d;
   padding: 10px;
   margin: 10px 0;
+  position: relative;
 }
 
-.playlist-options > button {
+.playlist-creator > button {
   display: block;
   margin: 10px auto 0 auto;
+}
+
+.artist-seed-list {
+  display: inline-block;
+  width: 45%;
+}
+
+.playlist-options {
+  display: block;
+  width: 45%;
 }
 
 textarea {
   height: 120px;
   resize: none;
-  display: block;
-  width: 45%;
+  width: 100%;
+}
+
+.artist-seed-generator {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+  text-align: center;
+  width: 300px;
 }
 
 label {
@@ -102,7 +127,7 @@ label {
 
 input[type="range"] {
   display: block;
-  width: 45%;
+  width: 100%;
 }
 
 input[type="text"] {
