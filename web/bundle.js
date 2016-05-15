@@ -66,7 +66,7 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _reduxPromise = __webpack_require__(275);
+	var _reduxPromise = __webpack_require__(277);
 	
 	var _reduxPromise2 = _interopRequireDefault(_reduxPromise);
 	
@@ -23229,6 +23229,11 @@
 	      var artist = void 0,
 	          selectRelated = void 0;
 	
+	      if (!artists) {
+	        alert('Please make sure to populate the artists field.');
+	        return;
+	      }
+	
 	      for (var i = 0; i < _this.state.playlistLength; i++) {
 	        selectRelated = i % _this.state.randomness != 0;
 	        artist = (0, _sample2.default)(artists);
@@ -23243,11 +23248,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'playlist-options' },
-	        _react2.default.createElement('textarea', { name: 'artistInput', onChange: this.onChange, value: this.state.artistInput }),
+	        _react2.default.createElement('textarea', { name: 'artistInput', onChange: this.onChange, value: this.state.artistInput, placeholder: 'Enter artists here to base the playlist off of (one per line)' }),
 	        _react2.default.createElement(
 	          'label',
 	          { htmlFor: 'randomness' },
-	          'Randomness: ',
+	          'Playlist Randomness: ',
 	          this.state.randomness
 	        ),
 	        _react2.default.createElement('input', { name: 'randomness', id: 'randomness', type: 'range', min: 1, max: 20, step: 1, value: this.state.randomness, onChange: this.onChange }),
@@ -23297,7 +23302,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.REMOVE_ALL_SONGS = exports.REMOVE_SONG = exports.FETCH_SONG = undefined;
+	exports.SAVE_PLAYLIST = exports.REMOVE_ALL_SONGS = exports.REMOVE_SONG = exports.FETCH_SONG = undefined;
 	exports.fetchSong = fetchSong;
 	exports.removeSong = removeSong;
 	exports.removeAllSongs = removeAllSongs;
@@ -23316,6 +23321,7 @@
 	var FETCH_SONG = exports.FETCH_SONG = 'FETCH_SONG';
 	var REMOVE_SONG = exports.REMOVE_SONG = 'REMOVE_SONG';
 	var REMOVE_ALL_SONGS = exports.REMOVE_ALL_SONGS = 'REMOVE_ALL_SONGS';
+	var SAVE_PLAYLIST = exports.SAVE_PLAYLIST = 'SAVE_PLAYLIST';
 	
 	var ROOT_URL = 'https://api.spotify.com/v1';
 	
@@ -23339,7 +23345,6 @@
 	    }
 	  }).then(function (response) {
 	    artistObj = selectRelated ? (0, _sample2.default)(response.data.artists) : response.data.artists.items[0];
-	    console.log(selectRelated, artistObj.name);
 	    return _axios2.default.get(ROOT_URL + '/artists/' + artistObj.id + '/albums?album_type=album%2Csingle%2Ccompilation&limit=50&market=' + market, header);
 	  }).then(function (response) {
 	    albumObj = (0, _sample2.default)(response.data.items);
@@ -23371,18 +23376,24 @@
 	  };
 	}
 	
-	function savePlaylist(auth, songs) {
+	function savePlaylist(auth, title, songs) {
 	  var authToken = {
 	    'Authorization': 'Bearer ' + auth.token
 	  };
 	
 	  var request = _axios2.default.post(ROOT_URL + '/users/' + auth.user + '/playlists', {
-	    name: "Test Playlist"
+	    name: title
 	  }, {
 	    headers: authToken
 	  }).then(function (response) {
-	    console.log(response);
-	    // axios.post(`${ROOT_URL}/users/${auth.user.id}/`)
+	    var playlistId = response.data.id;
+	    return _axios2.default.post(ROOT_URL + '/users/' + auth.user + '/playlists/' + playlistId + '/tracks', {
+	      uris: songs.map(function (song) {
+	        return 'spotify:track:' + song.song.id;
+	      })
+	    }, {
+	      headers: authToken
+	    });
 	  });
 	
 	  return {
@@ -24237,9 +24248,38 @@
 	  _inherits(Playlist, _Component);
 	
 	  function Playlist() {
+	    var _Object$getPrototypeO;
+	
+	    var _temp, _this, _ret;
+	
 	    _classCallCheck(this, Playlist);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Playlist).apply(this, arguments));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Playlist)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      title: "Super Cool Playlist",
+	      titleOverride: false
+	    }, _this.handleTitleChange = function (event) {
+	      _this.setState({
+	        title: event.target.value,
+	        titleOverride: true
+	      });
+	    }, _this.getTitle = function () {
+	      if (_this.state.titleOverride || _this.props.topArtists.length == 0) {
+	        return _this.state.title;
+	      } else {
+	        return _this.props.topArtists.reduce(function (prev, curr, i) {
+	          return prev + curr + (i === _this.props.topArtists.length - 2 ? ' and ' : ', ');
+	        }, '').slice(0, -2) + " Playlist";
+	      }
+	    }, _this.clearSongs = function () {
+	      _this.props.actions.removeAllSongs();
+	      _this.setState({
+	        titleOverride: false
+	      });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 	
 	  _createClass(Playlist, [{
@@ -24307,17 +24347,23 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'playlist' },
+	        _react2.default.createElement('input', { type: 'text', onChange: this.handleTitleChange, value: this.getTitle() }),
 	        _react2.default.createElement(
-	          'button',
-	          { className: 'basic-button', onClick: function onClick() {
-	              _this3.props.actions.savePlaylist(_this3.props.auth, _this3.props.songs);
-	            } },
-	          'Save Playlist'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { className: 'basic-button', onClick: this.props.actions.removeAllSongs },
-	          'Clear All Songs'
+	          'div',
+	          { className: 'playlist-buttons' },
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'basic-button', disabled: this.props.saved, onClick: function onClick() {
+	                _this3.props.actions.savePlaylist(_this3.props.auth, _this3.getTitle(), _this3.props.songs);
+	              } },
+	            ' ',
+	            this.props.saved ? "Saved" : "Save Playlist"
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'basic-button', onClick: this.clearSongs },
+	            'Clear All Songs'
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'table',
@@ -24365,7 +24411,10 @@
 	function mapStateToProps(state) {
 	  return {
 	    auth: state.auth,
-	    songs: state.playlist.songs
+	    songs: state.playlist.songs,
+	    artists: state.playlist.artists,
+	    topArtists: state.playlist.topArtists,
+	    saved: state.playlist.saved
 	  };
 	}
 	
@@ -24564,17 +24613,30 @@
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
 	
+	  var artist = void 0;
 	  switch (action.type) {
 	    case _playlist.FETCH_SONG:
-	      return _extends({}, state, { songs: (0, _shuffle2.default)(state.songs.concat([action.payload])) });
+	      artist = action.payload.artist.name;
+	      return _extends({}, state, {
+	        songs: (0, _shuffle2.default)(state.songs.concat([action.payload])),
+	        artists: _extends({}, state.artists, _defineProperty({}, artist, state.artists[artist] ? state.artists[artist] + 1 : 1)),
+	        topArtists: getTopArtists(state.artists),
+	        saved: false
+	      });
 	    case _playlist.REMOVE_SONG:
+	      artist = action.payload.artist.name;
 	      return _extends({}, state, {
 	        songs: state.songs.filter(function (song) {
 	          return song.song.id != action.payload.song.id;
-	        })
+	        }),
+	        artists: _extends({}, state.artists, _defineProperty({}, artist, state.artists[artist] ? state.artists[artist] - 1 : 0)),
+	        topArtists: getTopArtists(state.artists),
+	        saved: false
 	      });
 	    case _playlist.REMOVE_ALL_SONGS:
-	      return _extends({}, state, { songs: [] });
+	      return _extends({}, state, { songs: [], artists: {}, topArtists: [], saved: false });
+	    case _playlist.SAVE_PLAYLIST:
+	      return _extends({}, state, { saved: action.payload.statusText == "Created" });
 	    default:
 	      return state;
 	  }
@@ -24586,11 +24648,26 @@
 	
 	var _shuffle2 = _interopRequireDefault(_shuffle);
 	
+	var _take = __webpack_require__(275);
+	
+	var _take2 = _interopRequireDefault(_take);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	var INITIAL_STATE = {
-	  songs: []
+	  songs: [],
+	  artists: {},
+	  topArtists: [],
+	  saved: false
 	};
+	
+	function getTopArtists(artists) {
+	  return (0, _take2.default)(Object.keys(artists).sort(function (a, b) {
+	    return artists[b] - artists[a];
+	  }), 3);
+	}
 
 /***/ },
 /* 246 */
@@ -25577,6 +25654,86 @@
 /* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var baseSlice = __webpack_require__(276),
+	    toInteger = __webpack_require__(271);
+	
+	/**
+	 * Creates a slice of `array` with `n` elements taken from the beginning.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @param {number} [n=1] The number of elements to take.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {Array} Returns the slice of `array`.
+	 * @example
+	 *
+	 * _.take([1, 2, 3]);
+	 * // => [1]
+	 *
+	 * _.take([1, 2, 3], 2);
+	 * // => [1, 2]
+	 *
+	 * _.take([1, 2, 3], 5);
+	 * // => [1, 2, 3]
+	 *
+	 * _.take([1, 2, 3], 0);
+	 * // => []
+	 */
+	function take(array, n, guard) {
+	  if (!(array && array.length)) {
+	    return [];
+	  }
+	  n = (guard || n === undefined) ? 1 : toInteger(n);
+	  return baseSlice(array, 0, n < 0 ? 0 : n);
+	}
+	
+	module.exports = take;
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.slice` without an iteratee call guard.
+	 *
+	 * @private
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function baseSlice(array, start, end) {
+	  var index = -1,
+	      length = array.length;
+	
+	  if (start < 0) {
+	    start = -start > length ? 0 : (length + start);
+	  }
+	  end = end > length ? length : end;
+	  if (end < 0) {
+	    end += length;
+	  }
+	  length = start > end ? 0 : ((end - start) >>> 0);
+	  start >>>= 0;
+	
+	  var result = Array(length);
+	  while (++index < length) {
+	    result[index] = array[index + start];
+	  }
+	  return result;
+	}
+	
+	module.exports = baseSlice;
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	exports.__esModule = true;
@@ -25585,7 +25742,7 @@
 	
 	exports['default'] = promiseMiddleware;
 	
-	var _fluxStandardAction = __webpack_require__(276);
+	var _fluxStandardAction = __webpack_require__(278);
 	
 	function isPromise(val) {
 	  return val && typeof val.then === 'function';
@@ -25612,7 +25769,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 276 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25623,7 +25780,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _lodashIsplainobject = __webpack_require__(277);
+	var _lodashIsplainobject = __webpack_require__(279);
 	
 	var _lodashIsplainobject2 = _interopRequireDefault(_lodashIsplainobject);
 	
@@ -25642,7 +25799,7 @@
 	}
 
 /***/ },
-/* 277 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25653,9 +25810,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(278),
-	    isArguments = __webpack_require__(279),
-	    keysIn = __webpack_require__(280);
+	var baseFor = __webpack_require__(280),
+	    isArguments = __webpack_require__(281),
+	    keysIn = __webpack_require__(282);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -25751,7 +25908,7 @@
 
 
 /***/ },
-/* 278 */
+/* 280 */
 /***/ function(module, exports) {
 
 	/**
@@ -25805,7 +25962,7 @@
 
 
 /***/ },
-/* 279 */
+/* 281 */
 /***/ function(module, exports) {
 
 	/**
@@ -26054,7 +26211,7 @@
 
 
 /***/ },
-/* 280 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26065,8 +26222,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArguments = __webpack_require__(279),
-	    isArray = __webpack_require__(281);
+	var isArguments = __webpack_require__(281),
+	    isArray = __webpack_require__(283);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -26192,7 +26349,7 @@
 
 
 /***/ },
-/* 281 */
+/* 283 */
 /***/ function(module, exports) {
 
 	/**
