@@ -10,7 +10,7 @@ export default class Song extends Component {
         <td><div className="song">{song.song.name}</div></td>
         <td>
           <div className="remove">
-            <button className="remove-button" onClick={() => this.remove(song)}>x</button>
+            <button className="remove-button" onClick={() => this.props.remove(song)}>x</button>
           </div>
         </td>
       </tr>
