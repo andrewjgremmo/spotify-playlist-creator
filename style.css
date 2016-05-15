@@ -26,11 +26,11 @@ ul {
 /* --- BODY --- */
 
 body {
-    background-color: #2d2d2d;
-    font-family: 'Montserrat';
-    color: lightgrey;
-    font-weight: 400;
-    font-size: 14px;
+  background-color: #2d2d2d;
+  font-family: 'Montserrat';
+  color: lightgrey;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 h2 {
@@ -40,57 +40,93 @@ h2 {
 }
 
 .container {
-    background-color: black;
-    display: block;
-    padding: 10px;
-    width: 600px;
-    margin: 15px auto;
-    min-height: 500;
-    box-shadow: -2px 5px 5px 1px #242424;
-    -webkit-box-shadow: -2px 5px 5px 1px #242424;
-    -moz-box-shadow: -2px 5px 5px 1px #242424;
-    -o-box-shadow: -2px 5px 5px 1px #242424;
+  background-color: black;
+  display: block;
+  padding: 10px;
+  width: 600px;
+  margin: 15px auto 40px auto;
+  min-height: 500;
+  box-shadow: -2px 5px 5px 1px #242424;
+  -webkit-box-shadow: -2px 5px 5px 1px #242424;
+  -moz-box-shadow: -2px 5px 5px 1px #242424;
+  -o-box-shadow: -2px 5px 5px 1px #242424;
 }
 
 button.basic-button {
-    background-color: #2EBD59;
-    cursor: pointer;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 50px;
-    white-space: nowrap;
+  background-color: #2EBD59;
+  cursor: pointer;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 50px;
+  white-space: nowrap;
 }
 
-button.basic-button:hover {
+button.basic-button:not(:disabled):hover {
   background-color: #61DC86;
 }
 
+button:disabled {
+  background-color: #2d2d2d;
+  cursor: default;
+}
+
 .login {
-    display: block;
-    margin: 5px auto;
-    text-align: center;
-    width: 100%;
+  display: block;
+  margin: 5px auto;
+  text-align: center;
+  width: 100%;
 }
 
 .playlist-options {
-    border: 1px solid #2d2d2d;
-    padding: 10px;
+  border: 1px solid #2d2d2d;
+  padding: 10px;
+  margin: 10px 0;
 }
 
 .playlist-options > button {
-    display: block;
-    margin: 10px auto 0 auto;
+  display: block;
+  margin: 10px auto 0 auto;
 }
 
 textarea {
-    background-color: white;
-    height: 120px;
-    color: black;
-    resize: none;
-    display: block;
-    padding: 5px;
-    width: 45%;
-    font-family: 'Open Sans';
+  height: 120px;
+  resize: none;
+  display: block;
+  width: 45%;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="range"] {
+  display: block;
+  width: 45%;
+}
+
+input[type="text"] {
+  display: block;
+  margin: 5px auto;
+  width: 90%;
+}
+
+textarea, input[type="text"] {
+  background-color: white;
+  color: black;
+  font-family: 'Open Sans';
+  padding: 5px;
+}
+
+.playlist-buttons {
+  display: block;
+  margin: 10px auto;
+  text-align: center;
+  width: 300px;
+}
+
+.playlist-buttons > button {
+  margin: 0 5px;
 }
 
 table {

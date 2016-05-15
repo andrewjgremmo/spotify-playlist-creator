@@ -4,6 +4,7 @@ import sample from 'lodash/sample';
 export const FETCH_SONG = 'FETCH_SONG';
 export const REMOVE_SONG = 'REMOVE_SONG';
 export const REMOVE_ALL_SONGS = 'REMOVE_ALL_SONGS';
+export const SAVE_PLAYLIST = 'SAVE_PLAYLIST';
 
 const ROOT_URL = 'https://api.spotify.com/v1';
 
@@ -26,7 +27,6 @@ export function fetchSong(token, artist, market, selectRelated = false) {
     })
     .then(function(response) {
       artistObj = selectRelated ? sample(response.data.artists) : response.data.artists.items[0];
-      console.log(selectRelated, artistObj.name)
       return axios.get(`${ROOT_URL}/artists/${artistObj.id}/albums?album_type=album%2Csingle%2Ccompilation&limit=50&market=${market}`, header)
     })
     .then(function(response) {
@@ -60,19 +60,28 @@ export function removeAllSongs() {
   }
 }
 
-export function savePlaylist(auth, songs) {
+export function savePlaylist(auth, title, songs) {
   const authToken = {
     'Authorization': `Bearer ${auth.token}`
   }
 
   const request = axios.post(`${ROOT_URL}/users/${auth.user}/playlists`, {
-      name: "Test Playlist"
-    }, {
+      name: title
+    },
+    {
       headers: authToken
     }
   ).then(function(response) {
-    console.log(response);
-    // axios.post(`${ROOT_URL}/users/${auth.user.id}/`)
+    const playlistId = response.data.id;
+    return axios.post(`${ROOT_URL}/users/${auth.user}/playlists/${playlistId}/tracks`, {
+        uris: songs.map((song) => {
+          return `spotify:track:${song.song.id}`;
+        })
+      },
+      {
+        headers: authToken
+      }
+    )
   })
 
   return {
