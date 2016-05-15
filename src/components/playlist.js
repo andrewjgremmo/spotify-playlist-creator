@@ -4,6 +4,11 @@ import { bindActionCreators } from 'redux';
 import * as PlaylistActions from '../actions/playlist';
 
 export default class Playlist extends Component {
+  state = {
+    title: "Super Cool Playlist",
+    titleOverride: false
+  }
+
   renderSongs() {
     let trackNum = 0;
     return this.props.songs.map((song) => {
@@ -23,11 +28,40 @@ export default class Playlist extends Component {
     })
   }
 
+  handleTitleChange = (event) => {
+    this.setState({
+      title: event.target.value,
+      titleOverride: true
+    });
+  }
+
+  getTitle = () => {
+    if (this.state.titleOverride || this.props.topArtists.length == 0) {
+      return this.state.title;
+    } else {
+      return this.props.topArtists.reduce(
+        (prev, curr, i) => {
+          return prev + curr + ((i===this.props.topArtists.length-2) ? ' and ' : ', ')
+        }, '')
+      .slice(0, -2) + " Playlist";
+    }
+  }
+
+  clearSongs = () => {
+    this.props.actions.removeAllSongs();
+    this.setState({
+      titleOverride: false
+    })
+  }
+
   render() {
     return(
       <div className="playlist">
-        <button className="basic-button" onClick={() => {this.props.actions.savePlaylist(this.props.auth, this.props.songs)}}>Save Playlist</button>
-        <button className="basic-button" onClick={this.props.actions.removeAllSongs}>Clear All Songs</button>
+        <input type="text" onChange={this.handleTitleChange} value={this.getTitle()} />
+        <div className="playlist-buttons">
+          <button className="basic-button" disabled={ this.props.saved } onClick={() => {this.props.actions.savePlaylist(this.props.auth, this.getTitle(), this.props.songs)}}> { this.props.saved ? "Saved" : "Save Playlist" }</button>
+          <button className="basic-button" onClick={this.clearSongs}>Clear All Songs</button>
+        </div>
         <table>
           <thead>
             <tr>
@@ -49,7 +83,10 @@ export default class Playlist extends Component {
 function mapStateToProps(state) {
   return {
       auth: state.auth,
-      songs: state.playlist.songs
+      songs: state.playlist.songs,
+      artists: state.playlist.artists,
+      topArtists: state.playlist.topArtists,
+      saved: state.playlist.saved
   };
 }
 

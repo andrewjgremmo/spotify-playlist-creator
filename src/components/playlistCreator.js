@@ -19,6 +19,11 @@ export default class PlaylistCreator extends Component {
     const artists = this.state.artistInput.match(/[^\r\n]+/g);
     let artist, selectRelated;
 
+    if (!artists) {
+      alert('Please make sure to populate the artists field.');
+      return;
+    }
+
     for (let i = 0; i < this.state.playlistLength; i++) {
       selectRelated = i % this.state.randomness != 0;
       artist = sample(artists);
@@ -29,9 +34,9 @@ export default class PlaylistCreator extends Component {
   render () {
     return(
       <div className="playlist-options">
-        <textarea name="artistInput" onChange={this.onChange} value={this.state.artistInput}>
+        <textarea name="artistInput" onChange={this.onChange} value={this.state.artistInput} placeholder="Enter artists here to base the playlist off of (one per line)">
         </textarea>
-        <label htmlFor="randomness">Randomness: {this.state.randomness}</label>
+        <label htmlFor="randomness">Playlist Randomness: {this.state.randomness}</label>
         <input name="randomness" id="randomness" type="range" min={1} max={20} step={1} value={this.state.randomness} onChange={this.onChange} />
         <label htmlFor="playlistLength">Playlist Length: {this.state.playlistLength}</label>
         <input name="playlistLength" id="playlistLength" type="range" min={5} max={50} step={5} value={this.state.playlistLength} onChange={this.onChange} />
