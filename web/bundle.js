@@ -23339,7 +23339,7 @@
 	            'Playlist Length: ',
 	            this.state.playlistLength
 	          ),
-	          _react2.default.createElement('input', { name: 'playlistLength', id: 'playlistLength', type: 'range', min: 5, max: 50, step: 5, value: this.state.playlistLength, onChange: this.onChange }),
+	          _react2.default.createElement('input', { name: 'playlistLength', id: 'playlistLength', type: 'range', min: 5, max: 100, step: 5, value: this.state.playlistLength, onChange: this.onChange }),
 	          _react2.default.createElement(
 	            'label',
 	            { htmlFor: 'randomness' },
@@ -24568,7 +24568,7 @@
 	            _react2.default.createElement(
 	              "button",
 	              { className: "remove-button", onClick: function onClick() {
-	                  return _this2.remove(song);
+	                  return _this2.props.remove(song);
 	                } },
 	              "x"
 	            )

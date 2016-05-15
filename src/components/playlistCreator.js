@@ -79,7 +79,7 @@ export default class PlaylistCreator extends Component {
         <div className="playlist-options">
           {this.state.displayTips ? <h4>3. Tweak the length and the randomness (higher number = more deviation from artist list)</h4> : null}
           <label htmlFor="playlistLength">Playlist Length: {this.state.playlistLength}</label>
-          <input name="playlistLength" id="playlistLength" type="range" min={5} max={50} step={5} value={this.state.playlistLength} onChange={this.onChange} />
+          <input name="playlistLength" id="playlistLength" type="range" min={5} max={100} step={5} value={this.state.playlistLength} onChange={this.onChange} />
           <label htmlFor="randomness">Playlist Randomness: {this.state.randomness}</label>
           <input name="randomness" id="randomness" type="range" min={1} max={20} step={1} value={this.state.randomness} onChange={this.onChange} />
         </div>
