@@ -205,7 +205,7 @@ button.remove-button {
   font-family: 'Open Sans';
   line-height: 100%;
   margin-right: 5px;
-  padding: 0 4px 1px 4px;
+  padding: 0 3px 1px 4px;
   cursor: pointer;
   display: none;
 }

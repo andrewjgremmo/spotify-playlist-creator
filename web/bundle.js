@@ -24770,7 +24770,9 @@
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
 	
-	  var artist = void 0;
+	  var artist = void 0,
+	      artists = void 0;
+	
 	  switch (action.type) {
 	    case _playlist.FETCH_SONG:
 	      artist = action.payload.artist.name;
@@ -24782,12 +24784,14 @@
 	      });
 	    case _playlist.REMOVE_SONG:
 	      artist = action.payload.artist.name;
+	      artists = _extends({}, state.artists, _defineProperty({}, artist, state.artists[artist] ? state.artists[artist] - 1 : 0));
+	
 	      return _extends({}, state, {
 	        songs: state.songs.filter(function (song) {
 	          return song.song.id != action.payload.song.id;
 	        }),
-	        artists: _extends({}, state.artists, _defineProperty({}, artist, state.artists[artist] ? state.artists[artist] - 1 : 0)),
-	        topArtists: getTopArtists(state.artists),
+	        artists: artists,
+	        topArtists: getTopArtists(artists),
 	        saved: false
 	      });
 	    case _playlist.REMOVE_ALL_SONGS:
@@ -24825,7 +24829,10 @@
 	};
 	
 	function getTopArtists(artists) {
-	  return (0, _take2.default)(Object.keys(artists).sort(function (a, b) {
+	  //Return the artists with the 3 highest number of occurrence, reject any not > 0
+	  return (0, _take2.default)(Object.keys(artists).filter(function (artist) {
+	    return artists[artist] > 0;
+	  }).sort(function (a, b) {
 	    return artists[b] - artists[a];
 	  }), 3);
 	}
